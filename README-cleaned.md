@@ -118,9 +118,8 @@ The Wazuh all-in-one deployment method was used. It installed:
 
 The installation was completed from the Ubuntu terminal.
 
-![Wazuh installation placeholder](screenshots/placeholder-wazuh-installation.png)
+![Wazuh installation placeholder](screenshots/ubuntu-install-wazuh-modulels.png)
 
-*Replace `placeholder-wazuh-installation.png` with the screenshot showing the completed Wazuh installation.*
 
 ## 3. Accessing the Wazuh Dashboard
 
@@ -144,9 +143,8 @@ The agent deployment wizard was opened from:
 Agents Management → Summary → Deploy New Agent
 ```
 
-![Wazuh agent deployment placeholder](screenshots/placeholder-agent-deployment.png)
+![Wazuh agent deployment placeholder](screenshots/deploying-agent.png)
 
-*Replace `placeholder-agent-deployment.png` with the screenshot of the Wazuh agent deployment wizard.*
 
 The generated PowerShell command was copied and executed from an elevated PowerShell window on the Windows virtual machine.
 
@@ -170,9 +168,8 @@ Status: Running
 
 The Windows agent then appeared as `Active` in the Wazuh dashboard.
 
-![Active Wazuh agent placeholder](screenshots/placeholder-agent-active.png)
+![Active Wazuh agent placeholder](screenshots/windows-agent-added.png)
 
-*Replace `placeholder-agent-active.png` with the screenshot showing the Windows endpoint as active.*
 
 ## 6. Installing Sysmon
 
@@ -196,7 +193,7 @@ Expand-Archive `
   -Force
 ```
 
-The [Sysmon Modular configuration](https://github.com/olafhartong/sysmon-modular) by Olaf Hartong was used as a starting point.
+The [Sysmon Modular configuration](screenshots/installing-sysmon-with-olaf-config.png) by Olaf Hartong was used as a starting point.
 
 Sysmon was installed with:
 
@@ -308,9 +305,8 @@ The resulting Wazuh events demonstrated detection of:
 - Attribute changes
 - Content changes for supported text files
 
-![File Integrity Monitoring alert placeholder](screenshots/placeholder-fim-alert.png)
+![File Integrity Monitoring alert placeholder](screenshots/file-integrity-completed.png)
 
-*Replace `placeholder-fim-alert.png` with a screenshot of the Wazuh File Integrity Monitoring alert.*
 
 ## 11. Skills Demonstrated
 
