@@ -123,6 +123,7 @@ The Wazuh all-in-one deployment method was used. It installed:
 
 The installation was performed from the Ubuntu terminal.
 ## Screenshot
+
 ---
 
 # 3. Accessing the Wazuh Dashboard
