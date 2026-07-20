@@ -1,4 +1,4 @@
-# Attack Artifacts in Logs — Analysis and Threat Detection in SIEM Systems
+# Wazuh Home SOC Lab
 
 ---
 
