@@ -1,163 +1,346 @@
 # Attack Artifacts in Logs — Analysis and Threat Detection in SIEM Systems
 
-> **Engineering thesis project — author: Damian Bugaj**  
-> *Faculty of Applied Informatics and Mathematics, SGGW*
-
 ---
 
 ## 📌 Project Overview
 
-The project focuses on **analyzing attack artifacts in system and network logs** and on **detecting threats using SIEM-class systems**.  
+This project documents the design and implementation of a small Security Operations Center lab using Wazuh, Ubuntu Server, Windows 11, Sysmon, VMware Workstation, and Parrot OS. and on **detecting threats using SIEM-class systems**.  
 For this purpose, a complete **laboratory environment simulating a SOC** was built, allowing to simulate real cyberattacks, capture their traces, and analyze detection methods.
 
 Main project goals:
+- Security monitoring
+- Endpoint log collection
+- Windows telemetry analysis
+- Detection engineering
+- File integrity monitoring
+- Custom Wazuh rule creation
+- Threat hunting
+- Alert investigation
+- Basic attack simulation in an isolated environment
+- Understand how attacks **leave detectable artifacts in logs**
+- Map attacker activity to the **MITRE ATT&CK** model
 
-- understand how attacks **leave detectable artifacts in logs**
-- learn how to **collect and correlate data from multiple sources**
-- detect attacks using **Elastic Stack, Zeek, Suricata, Sysmon, Windows Event Log**
-- map attacker activity to the **MITRE ATT&CK** model
-- design and build a **SOC laboratory environment** enabling **realistic attack simulations**
+  
+The final environment allows activity on a Windows endpoint to be collected by Sysmon and the Wazuh agent, processed by the Wazuh manager, indexed, and displayed in the Wazuh dashboard.
+---
+## Project Status
+
+### Completed
+
+- Ubuntu Server virtual machine created
+- Wazuh all-in-one deployment installed
+- Wazuh manager configured
+- Wazuh indexer configured
+- Wazuh dashboard configured
+- Windows 11 virtual machine created
+- VMware Tools installed
+- Wazuh Windows agent deployed
+- Windows agent connected successfully
+- Sysmon installed on Windows
+- Sysmon event channel added to the Wazuh agent configuration
+- Sysmon alerts confirmed in Wazuh
+- Custom Notepad process detection rule created
+- File integrity monitoring configured
+- Real-time directory monitoring enabled
+
+### Planned Improvements
+
+- RDP failed-login detection
+- Brute-force correlation rule
+- Active response testing
+- Additional Sysmon detections
+- Email or webhook alerting
+- Vulnerability detection
+- Security configuration assessment
+- Dashboard customization
 
 ---
 
-## 🧪 Laboratory Environment
+## Lab Architecture
 
-The environment replicates a corporate network and consists of:
-
-- **pfSense** — firewall and SPAN/mirror port  
-- **Kali Linux** — attacking machine  
-- **Windows Server 2019** — AD domain controller, DNS, IIS  
-- **Windows 10** — domain client (victim machine)  
-- **Ubuntu (Wazuh)** — HIDS host collecting logs from Wazuh agent  
-- **Ubuntu (Elastic Stack)** — main SIEM detection host centralizing logs from multiple sources, containing:
-  - **Fleet Server with Elastic Agent**
-  - **Filebeat, Winlogbeat**
-  - **Kibana and Elasticsearch**
-  - integrated **Suricata** and **Zeek** for network traffic analysis
-
-> Entire environment runs on VMware Workstation
-
----
-
-## 🗺️ Lab Topology
-
-Below is the network topology of the SOC detection lab used in this project:
-
-![Lab Topology](./docs/lab_topology.jpg)
-
----
-
-## ⚡ Attack Scenario — Implementation and Execution
-
-1. **Network reconnaissance** – subnet and port scanning (Nmap)
-2. **Brute-force attack on RDP** – Hydra + SecLists dictionaries
-3. **Remote login to the machine** – xfreerdp (RDP)
-4. **Download and execute Apollo payload** – generated in Mythic C2
-5. **Persistence** – scheduled task (SYSTEM) and registry entry (user)
-6. **Post-exploitation reconnaissance and data exfiltration** – Apollo functions (whoami, screenshot, keylogger, download)
-7. **Test of persistence mechanisms** – logging in as another user
-
----
-
-## 🕵️ Detection and Analysis
-
-The following tools and methods were used to detect and investigate the attack:
-
-- **Network detection** — Suricata alerts, Zeek logs
-- **Host detection** — Sysmon and Windows Event Log 
-- **Central log analysis** — Elastic Stack dashboards (Kibana)  
-- **File Integrity Monitoring (FIM)** — tracking file and registry changes  
-- **Sandbox and reputation** — analyzing the file in VirusTotal
-
-Identified artifacts included: **attacker IP address, file hash, paths, registry changes, scheduled task, encoded PowerShell commands, process trees, network anomalies**, and **techniques mapped to MITRE ATT&CK**.
-
----
-
-## 🧠 Analytical Models
-
-Collected artifacts and activities were classified using:
-
-- **Pyramid of Pain** — assessing detection value vs. ease of evasion  
-- **MITRE ATT&CK** — mapping each attack stage to known tactics and techniques (visualized in ATT&CK Navigator)
-
-This allowed determining which techniques were effectively detected and where visibility gaps existed.
-
----
-
-## 📈 Results
-
-- Built a complete SOC lab environment from scratch  
-- Executed a full attack chain and collected real detection data  
-- Performed a **comprehensive detection analysis**  
-- **Reconstructed the exact attack timeline from logs**
-- Mapped all stages to **MITRE ATT&CK** and evaluated tool effectiveness  
-
-The repository contains **step-by-step documentation of attack and detection** along with **screenshots from the attack and detection process**.
-
----
-
-## 🚀 Future Work
-
-Possible future enhancements:
-
-- Integration of TheHive + Cortex (SOAR)  
-- Connecting MISP for automated IoC ingestion  
-- Exposing a Cowrie honeypot to the Internet  
-- Adding vulnerable hosts for exploits testing  
-- Introducing a DMZ network zone  
-- Running Suricata in inline IPS mode to block malicious traffic
-- Creating and testing custom Sigma rules  
-- RAM analysis using Volatility  
-- Adding more offensive tools and APT-style scenarios
-- Testing and tuning firewalls  
-- Using Wazuh for advanced detection  
-- Deploying DFIR tools (e.g. Velociraptor)  
-- Simulating attacks on AD, IIS and other infrastructure services  
-- Implementing additional MITRE ATT&CK techniques
-- Adding unpatched vulnerable systems to test exploits
-- Adding Linux-based victim machines
-- Integrate and test BloodHound in the lab for Active Directory enumeration and attack-path analysis
-
-
----
-
-## 📂 Repository Structure
 ```
-siem-attack-detection-lab
-├── 03_lab_environment/         → documentation of the lab environment configuration
-├── 05_attack_scenario/         → implementation and execution of the attack scenario
-├── 06_detection_and_analysis/  → log analysis and threat detection process
-├── 07_final_analysis/          → final analysis, conclusions, evaluation of tools
-├── 8.3_future_work.md          → directions for further development of the environment
-├── docs/                       → folder with the engineering thesis (PDF)
-├── README.md                   → main project description
+                         VMware Workstation
+
+       ┌──────────────────────────────────────────────┐
+       │                                              │
+       │    ┌───────────────────────────────────┐     │
+       │    │ Ubuntu Server                    │     │
+       │    │                                   │     │
+       │    │ Wazuh Manager                    │     │
+       │    │ Wazuh Indexer                    │     │
+       │    │ Wazuh Dashboard                  │     │
+       │    └───────────────┬───────────────────┘     │
+       │                    │                         │
+       │          VMware NAT Network                  │
+       │                    │                         │
+       │    ┌───────────────┴───────────────────┐     │
+       │    │ Windows 11                       │     │
+       │    │                                   │     │
+       │    │ Wazuh Agent                      │     │
+       │    │ Sysmon                           │     │
+       │    │ File Integrity Monitoring        │     │
+       │    └───────────────────────────────────┘     │
+       │                                              │
+       │    ┌───────────────────────────────────┐     │
+       │    │ Parrot OS                        │     │
+       │    │                                   │     │
+       │    │ Controlled testing system        │     │
+       │    └───────────────────────────────────┘     │
+       │                                              │
+       └──────────────────────────────────────────────┘
 ```
 
-Each chapter folder contains:
-- one `chapter_overview.md` (introduction to the chapter),
-- a set of `.md` files for each subchapter,
-- an `images/` folder with related screenshots.
+---
+# 1. Installing Ubuntu Server
+
+Ubuntu Server AMD64 was installed on the Wazuh virtual machine.
+
+During installation:
+
+- OpenSSH Server was enabled
+- A local administrative user was created
+- The VM remained connected to VMware NAT
+
+The Ubuntu IP address was identified with:
+
+```bash
+hostname -I
+```
+
+The server was then managed from Windows PowerShell through SSH:
+
+---
+# 2. Installing the Wazuh Server
+
+The Wazuh all-in-one deployment method was used. It installed:
+
+- Wazuh Manager
+- Wazuh Indexer
+- Wazuh Dashboard
+- Filebeat
+- Certificates
+- Internal Wazuh users
+
+The installation was performed from the Ubuntu terminal.
+## Screenshot
+---
+
+# 3. Accessing the Wazuh Dashboard
+
+The Wazuh dashboard was accessed from my Host Windows laptop:
+
+## Screenshot
+> Wazuh dashboard successfully accessed from the Windows host machine.
 
 ---
 
-## 📘 Full Engineering Thesis
+# 4. Installing Windows 11
 
-The repository also includes the **complete engineering thesis** containing:
-
-- a detailed description of the detection machines’ configuration,  
-- a diagram of the log flow within the environment,  
-- additional theoretical and practical information.
-
-📄 [View full thesis (PDF)](./docs/my_engineering_thesis.pdf)
+A Windows 11 VM was created in VMware Workstation using the official ISO file from Microsofts website.
 
 ---
 
-## 📫 Contact
+# 5. Deploying the Wazuh Windows Agent
 
-🔗 [LinkedIn](https://www.linkedin.com/in/damian-bugaj-4a948827a/)  
-📧 Email: damianbugaj6@icloud.com
+In the Wazuh dashboard:
+
+```text
+Agents Management → Summary → Deploy New Agent
+```
+## Screenshot
+The generated PowerShell installation command was copied and executed in an elevated PowerShell window on the Windows VM.
+The Wazuh service was started:
+
+```powershell
+Start-Service WazuhSvc
+```
+
+Its status was verified:
+
+```powershell
+Get-Service WazuhSvc
+```
+
+Expected result:
+
+```text
+Status: Running
+```
+
+The Windows agent appeared as `Active` in the Wazuh dashboard.
+## Screenshot
+> Windows endpoint successfully enrolled and reporting as an active Wazuh agent.
+
+# 6. Installing Sysmon
+
+A working directory was created:
+
+```powershell
+New-Item -ItemType Directory -Path C:\SOC\Sysmon -Force
+Set-Location C:\SOC\Sysmon
+```
+
+Sysmon was downloaded and extracted:
+
+```powershell
+Invoke-WebRequest `
+  -Uri "https://download.sysinternals.com/files/Sysmon.zip" `
+  -OutFile "C:\SOC\Sysmon\Sysmon.zip"
+
+Expand-Archive `
+  -Path "C:\SOC\Sysmon\Sysmon.zip" `
+  -DestinationPath "C:\SOC\Sysmon" `
+  -Force
+```
+
+A community Sysmon configuration was downloaded and used as a starting point (https://github.com/olafhartong/sysmon-modular).
+
+Sysmon was installed:
+
+```powershell
+C:\SOC\Sysmon\Sysmon64.exe `
+  -accepteula `
+  -i C:\SOC\Sysmon\sysmonconfig.xml
+```
+---
+
+# 7. Verifying Sysmon Events Locally
+
+Sysmon events were reviewed in Windows Event Viewer:
+
+```text
+Applications and Services Logs
+└── Microsoft
+    └── Windows
+        └── Sysmon
+            └── Operational
+```
+# 8. Configuring Wazuh to Collect Sysmon
+
+The Wazuh agent configuration was located at:
+
+```text
+C:\Program Files (x86)\ossec-agent\ossec.conf
+```
+
+Because the file is located under `Program Files (x86)`, it had to be edited from an elevated application.
+
+PowerShell was opened as Administrator:
+
+```powershell
+notepad "C:\Program Files (x86)\ossec-agent\ossec.conf"
+```
+
+The following block was added before the final `</ossec_config>` tag:
+
+```xml
+<localfile>
+  <location>Microsoft-Windows-Sysmon/Operational</location>
+  <log_format>eventchannel</log_format>
+</localfile>
+```
+
+The Wazuh service was restarted:
+
+```powershell
+Restart-Service WazuhSvc
+```
+
+## Screenshot
+> Wazuh Threat Hunting dashboard displaying Sysmon alerts from the Windows endpoint.
+
+
+> Sysmon operational log showing endpoint telemetry generated by the Windows VM.
+
+# 9. Configuring File Integrity Monitoring
+
+A directory was created on Windows:
+
+```powershell
+New-Item `
+  -ItemType Directory `
+  -Path "C:\SOC\integrity-check" `
+  -Force
+```
+
+The Wazuh agent configuration was reopened as Administrator:
+
+```powershell
+notepad "C:\Program Files (x86)\ossec-agent\ossec.conf"
+```
+
+Inside the existing `<syscheck>` section, the following entry was added:
+
+```xml
+<directories realtime="yes"
+             check_all="yes"
+             report_changes="yes">C:\SOC\integrity-check</directories>
+```
+# 10. Testing File Integrity Monitoring
+
+A file was created:
+
+```powershell
+"First version" |
+Set-Content "C:\SOC\integrity-check\test.txt"
+```
+
+The file was then modified:
+
+```powershell
+"Second version" |
+Add-Content "C:\SOC\integrity-check\test.txt"
+```
+And a file was deleted, called "My business model"
+
+The resulting events demonstrate that Wazuh can detect:
+
+- File creation
+- File modification
+- File deletion
+- Attribute changes
+- Content changes for supported text files
+
+## Screenshot
+> Wazuh alert showing a file change inside the monitored integrity-check directory.
+
+# 11. Skills Demonstrated
+
+This project demonstrates experience with:
+
+- VMware Workstation
+- Linux server administration
+- Windows administration
+- SSH
+- PowerShell
+- Security monitoring
+- Wazuh deployment
+- Endpoint agent deployment
+- Sysmon configuration
+- Windows Event Logs
+- XML configuration
+- File integrity monitoring
+- Threat hunting
+- Alert analysis
+- Troubleshooting
+
+# 12. Future Improvements
+
+Planned extensions include:
+
+1. Detect repeated Windows authentication failures.
+3. Detect suspicious PowerShell commands.
+4. Detect encoded PowerShell execution.
+5. Detect new local administrator accounts.
+7. Detect changes to sensitive Windows directories.
+10. Map detections to MITRE ATT&CK.
+11. Test Wazuh Active Response.
+12. Create custom Wazuh dashboard visualizations.
+14. Integrate TheHive, Shuffle, or MISP.
 
 ---
+
+
 
 ## 📌 Keywords
 
