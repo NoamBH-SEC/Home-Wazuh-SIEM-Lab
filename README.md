@@ -193,7 +193,7 @@ Expand-Archive `
   -Force
 ```
 
-The [Sysmon Modular configuration](screenshots/installing-sysmon-with-olaf-config.png) by Olaf Hartong was used as a starting point.
+The [Sysmon Modular configuration](https://github.com/olafhartong/sysmon-modular) by Olaf Hartong was used as a starting point.
 
 Sysmon was installed with:
 
