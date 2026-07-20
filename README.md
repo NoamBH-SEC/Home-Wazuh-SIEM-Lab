@@ -1,105 +1,97 @@
 # Wazuh Home SOC Lab
 
----
+## Project Overview
 
-## 📌 Project Overview
+This project documents the design and implementation of a small Security Operations Center lab built with Wazuh, Ubuntu Server, Windows 11, Sysmon, VMware Workstation, and Parrot OS.
 
-This project documents the design and implementation of a small Security Operations Center lab using Wazuh, Ubuntu Server, Windows 11, Sysmon, VMware Workstation, and Parrot OS. and on **detecting threats using SIEM-class systems**.  
-For this purpose, a complete **laboratory environment simulating a SOC** was built, allowing to simulate real cyberattacks, capture their traces, and analyze detection methods.
+The lab was created to simulate common SOC workflows in a controlled environment. It provides a practical way to generate security events, collect endpoint telemetry, investigate alerts, and understand how attacker activity leaves evidence in system logs.
 
-Main project goals:
-- Security monitoring
-- Endpoint log collection
-- Windows telemetry analysis
-- Detection engineering
-- File integrity monitoring
-- Custom Wazuh rule creation
-- Threat hunting
-- Alert investigation
-- Basic attack simulation in an isolated environment
-- Understand how attacks **leave detectable artifacts in logs**
-- Map attacker activity to the **MITRE ATT&CK** model
+### Project Goals
 
-  
-The final environment allows activity on a Windows endpoint to be collected by Sysmon and the Wazuh agent, processed by the Wazuh manager, indexed, and displayed in the Wazuh dashboard.
----
+- Monitor endpoint activity
+- Collect and analyze Windows logs
+- Use Sysmon for detailed endpoint telemetry
+- Build and test custom Wazuh detections
+- Configure file integrity monitoring
+- Practice threat hunting and alert investigation
+- Generate controlled attack activity inside an isolated lab
+- Identify the artifacts created by suspicious activity
+- Map detections to the MITRE ATT&CK framework
+
+The final environment collects activity from a Windows endpoint through Sysmon and the Wazuh agent. The Wazuh manager processes the events, the indexer stores them, and the dashboard provides a central interface for analysis.
+
 ## Project Status
 
 ### Completed
 
-- Ubuntu Server virtual machine created
-- Wazuh all-in-one deployment installed
-- Wazuh manager configured
-- Wazuh indexer configured
-- Wazuh dashboard configured
-- Windows 11 virtual machine created
-- VMware Tools installed
-- Wazuh Windows agent deployed
-- Windows agent connected successfully
-- Sysmon installed on Windows
-- Sysmon event channel added to the Wazuh agent configuration
-- Sysmon alerts confirmed in Wazuh
-- Custom Notepad process detection rule created
-- File integrity monitoring configured
-- Real-time directory monitoring enabled
+- [x] Created the Ubuntu Server virtual machine
+- [x] Installed the Wazuh all-in-one deployment
+- [x] Configured the Wazuh manager, indexer, and dashboard
+- [x] Created the Windows 11 virtual machine
+- [x] Installed VMware Tools
+- [x] Deployed the Wazuh Windows agent
+- [x] Confirmed the Windows agent was active
+- [x] Installed Sysmon on Windows
+- [x] Added the Sysmon event channel to the Wazuh agent configuration
+- [x] Confirmed Sysmon alerts were reaching Wazuh
+- [x] Created a custom Notepad process detection rule
+- [x] Configured File Integrity Monitoring
+- [x] Enabled real-time monitoring for a custom directory
 
 ### Planned Improvements
 
-- RDP failed-login detection
-- Brute-force correlation rule
-- Active response testing
-- Additional Sysmon detections
-- Email or webhook alerting
-- Vulnerability detection
-- Security configuration assessment
-- Dashboard customization
-
----
+- [ ] Detect repeated RDP authentication failures
+- [ ] Create a brute-force correlation rule
+- [ ] Test Wazuh Active Response
+- [ ] Add more Sysmon-based detections
+- [ ] Configure email or webhook notifications
+- [ ] Enable vulnerability detection
+- [ ] Review Security Configuration Assessment results
+- [ ] Create custom dashboard views
 
 ## Lab Architecture
 
-```
+```text
                          VMware Workstation
 
        ┌──────────────────────────────────────────────┐
        │                                              │
        │    ┌───────────────────────────────────┐     │
-       │    │ Ubuntu Server                    │     │
+       │    │ Ubuntu Server                     │     │
        │    │                                   │     │
-       │    │ Wazuh Manager                    │     │
-       │    │ Wazuh Indexer                    │     │
-       │    │ Wazuh Dashboard                  │     │
+       │    │ Wazuh Manager                     │     │
+       │    │ Wazuh Indexer                     │     │
+       │    │ Wazuh Dashboard                   │     │
        │    └───────────────┬───────────────────┘     │
        │                    │                         │
        │          VMware NAT Network                  │
        │                    │                         │
        │    ┌───────────────┴───────────────────┐     │
-       │    │ Windows 11                       │     │
+       │    │ Windows 11                        │     │
        │    │                                   │     │
-       │    │ Wazuh Agent                      │     │
-       │    │ Sysmon                           │     │
-       │    │ File Integrity Monitoring        │     │
+       │    │ Wazuh Agent                       │     │
+       │    │ Sysmon                            │     │
+       │    │ File Integrity Monitoring         │     │
        │    └───────────────────────────────────┘     │
        │                                              │
        │    ┌───────────────────────────────────┐     │
-       │    │ Parrot OS                        │     │
+       │    │ Parrot OS                         │     │
        │    │                                   │     │
-       │    │ Controlled testing system        │     │
+       │    │ Controlled testing system         │     │
        │    └───────────────────────────────────┘     │
        │                                              │
        └──────────────────────────────────────────────┘
 ```
 
----
-# 1. Installing Ubuntu Server
+## 1. Installing Ubuntu Server
 
-Ubuntu Server AMD64 was installed on the Wazuh virtual machine.
+Ubuntu Server AMD64 was installed on the virtual machine that hosts the Wazuh components.
 
 During installation:
 
 - OpenSSH Server was enabled
 - A local administrative user was created
-- The VM remained connected to VMware NAT
+- The virtual machine remained connected to the VMware NAT network
 
 The Ubuntu IP address was identified with:
 
@@ -107,10 +99,13 @@ The Ubuntu IP address was identified with:
 hostname -I
 ```
 
-The server was then managed from Windows PowerShell through SSH:
+The server was then managed from Windows PowerShell over SSH:
 
----
-# 2. Installing the Wazuh Server
+```powershell
+ssh <ubuntu-user>@<wazuh-server-ip>
+```
+
+## 2. Installing the Wazuh Server
 
 The Wazuh all-in-one deployment method was used. It installed:
 
@@ -121,42 +116,45 @@ The Wazuh all-in-one deployment method was used. It installed:
 - Certificates
 - Internal Wazuh users
 
-The installation was performed from the Ubuntu terminal.
-## Screenshot
+The installation was completed from the Ubuntu terminal.
 
----
+![Wazuh installation placeholder](screenshots/ubuntu-install-wazuh-modulels.png)
 
-# 3. Accessing the Wazuh Dashboard
 
-The Wazuh dashboard was accessed from my Host Windows laptop:
+## 3. Accessing the Wazuh Dashboard
 
-## Screenshot
-> Wazuh dashboard successfully accessed from the Windows host machine.
+The Wazuh dashboard was accessed from the Windows host through a web browser.
 
----
+![Wazuh dashboard placeholder](screenshots/placeholder-wazuh-dashboard.png)
 
-# 4. Installing Windows 11
+*Replace `placeholder-wazuh-dashboard.png` with a screenshot of the Wazuh dashboard.*
 
-A Windows 11 VM was created in VMware Workstation using the official ISO file from Microsofts website.
+## 4. Installing Windows 11
 
----
+A Windows 11 virtual machine was created in VMware Workstation using an official Microsoft ISO.
 
-# 5. Deploying the Wazuh Windows Agent
+This machine acts as the monitored endpoint in the lab.
 
-In the Wazuh dashboard:
+## 5. Deploying the Wazuh Windows Agent
+
+The agent deployment wizard was opened from:
 
 ```text
 Agents Management → Summary → Deploy New Agent
 ```
-## Screenshot
-The generated PowerShell installation command was copied and executed in an elevated PowerShell window on the Windows VM.
-The Wazuh service was started:
+
+![Wazuh agent deployment placeholder](screenshots/deploying-agent.png)
+
+
+The generated PowerShell command was copied and executed from an elevated PowerShell window on the Windows virtual machine.
+
+The Wazuh service was started with:
 
 ```powershell
 Start-Service WazuhSvc
 ```
 
-Its status was verified:
+Its status was verified with:
 
 ```powershell
 Get-Service WazuhSvc
@@ -168,13 +166,14 @@ Expected result:
 Status: Running
 ```
 
-The Windows agent appeared as `Active` in the Wazuh dashboard.
-## Screenshot
-> Windows endpoint successfully enrolled and reporting as an active Wazuh agent.
+The Windows agent then appeared as `Active` in the Wazuh dashboard.
 
-# 6. Installing Sysmon
+![Active Wazuh agent placeholder](screenshots/windows-agent-added.png)
 
-A working directory was created:
+
+## 6. Installing Sysmon
+
+A working directory was created on the Windows endpoint:
 
 ```powershell
 New-Item -ItemType Directory -Path C:\SOC\Sysmon -Force
@@ -194,20 +193,19 @@ Expand-Archive `
   -Force
 ```
 
-A community Sysmon configuration was downloaded and used as a starting point (https://github.com/olafhartong/sysmon-modular).
+The [Sysmon Modular configuration](screenshots/installing-sysmon-with-olaf-config.png) by Olaf Hartong was used as a starting point.
 
-Sysmon was installed:
+Sysmon was installed with:
 
 ```powershell
 C:\SOC\Sysmon\Sysmon64.exe `
   -accepteula `
   -i C:\SOC\Sysmon\sysmonconfig.xml
 ```
----
 
-# 7. Verifying Sysmon Events Locally
+## 7. Verifying Sysmon Events Locally
 
-Sysmon events were reviewed in Windows Event Viewer:
+Sysmon events were reviewed in Windows Event Viewer at:
 
 ```text
 Applications and Services Logs
@@ -216,17 +214,18 @@ Applications and Services Logs
         └── Sysmon
             └── Operational
 ```
-# 8. Configuring Wazuh to Collect Sysmon
 
-The Wazuh agent configuration was located at:
+This confirmed that Sysmon was collecting process, file, registry, and network telemetry on the Windows endpoint.
+
+## 8. Configuring Wazuh to Collect Sysmon
+
+The Wazuh agent configuration file is located at:
 
 ```text
 C:\Program Files (x86)\ossec-agent\ossec.conf
 ```
 
-Because the file is located under `Program Files (x86)`, it had to be edited from an elevated application.
-
-PowerShell was opened as Administrator:
+Because the file is stored under `Program Files (x86)`, it was opened from an elevated PowerShell session:
 
 ```powershell
 notepad "C:\Program Files (x86)\ossec-agent\ossec.conf"
@@ -241,21 +240,21 @@ The following block was added before the final `</ossec_config>` tag:
 </localfile>
 ```
 
-The Wazuh service was restarted:
+The Wazuh agent service was restarted:
 
 ```powershell
 Restart-Service WazuhSvc
 ```
 
-## Screenshot
-> Wazuh Threat Hunting dashboard displaying Sysmon alerts from the Windows endpoint.
+The Threat Hunting dashboard was then used to confirm that Sysmon events were reaching Wazuh.
 
+![Sysmon events in Wazuh placeholder](screenshots/placeholder-wazuh-sysmon-events.png)
 
-> Sysmon operational log showing endpoint telemetry generated by the Windows VM.
+*Replace `placeholder-wazuh-sysmon-events.png` with a screenshot showing Sysmon events in Wazuh Threat Hunting.*
 
-# 9. Configuring File Integrity Monitoring
+## 9. Configuring File Integrity Monitoring
 
-A directory was created on Windows:
+A custom directory was created on the Windows endpoint:
 
 ```powershell
 New-Item `
@@ -277,9 +276,12 @@ Inside the existing `<syscheck>` section, the following entry was added:
              check_all="yes"
              report_changes="yes">C:\SOC\integrity-check</directories>
 ```
-# 10. Testing File Integrity Monitoring
 
-A file was created:
+This configuration enables real-time monitoring and records supported file changes inside the custom directory.
+
+## 10. Testing File Integrity Monitoring
+
+A test file was created:
 
 ```powershell
 "First version" |
@@ -292,9 +294,10 @@ The file was then modified:
 "Second version" |
 Add-Content "C:\SOC\integrity-check\test.txt"
 ```
-And a file was deleted, called "My business model"
 
-The resulting events demonstrate that Wazuh can detect:
+A separate sample file named `My business model` was also deleted to generate a file deletion event.
+
+The resulting Wazuh events demonstrated detection of:
 
 - File creation
 - File modification
@@ -302,12 +305,12 @@ The resulting events demonstrate that Wazuh can detect:
 - Attribute changes
 - Content changes for supported text files
 
-## Screenshot
-> Wazuh alert showing a file change inside the monitored integrity-check directory.
+![File Integrity Monitoring alert placeholder](screenshots/file-integrity-completed.png)
 
-# 11. Skills Demonstrated
 
-This project demonstrates experience with:
+## 11. Skills Demonstrated
+
+This project demonstrates practical experience with:
 
 - VMware Workstation
 - Linux server administration
@@ -320,29 +323,25 @@ This project demonstrates experience with:
 - Sysmon configuration
 - Windows Event Logs
 - XML configuration
-- File integrity monitoring
+- File Integrity Monitoring
 - Threat hunting
 - Alert analysis
 - Troubleshooting
 
-# 12. Future Improvements
+## 12. Future Improvements
 
 Planned extensions include:
 
-1. Detect repeated Windows authentication failures.
-2. Detect suspicious PowerShell commands.
-3. Detect encoded PowerShell execution.
-4. Detect new local administrator accounts.
-5. Detect changes to sensitive Windows directories.
-6. Map detections to MITRE ATT&CK.
-7. Test Wazuh Active Response.
-8. Create custom Wazuh dashboard visualizations.
-9. Integrate TheHive, Shuffle, or MISP.
+1. Detect repeated Windows authentication failures
+2. Detect suspicious PowerShell commands
+3. Detect encoded PowerShell execution
+4. Detect newly created local administrator accounts
+5. Monitor changes to sensitive Windows directories
+6. Map custom detections to MITRE ATT&CK
+7. Test Wazuh Active Response
+8. Create custom Wazuh dashboard visualizations
+9. Integrate TheHive, Shuffle, or MISP
 
----
+## Keywords
 
-
-
-## 📌 Keywords
-
-`siem` · `cybersecurity` · `elastic-stack` · `suricata` · `zeek` · `sysmon` · `Windows-event-log` · `threat-detection` · `mitre-attack` · `soc` · `log-analysis` · `blue-team` · `filebeat` · `winlogbeat` · `kibana` · `elasticsearch` · `kali-linux` · `network-security` · `endpoint-security` · `pfsense` · `mythic` · `c2-framework` · `log-monitoring` · `event-correlation` · `homelab` · `vmware` · `pyramid-of-pain` 
+`wazuh` · `siem` · `cybersecurity` · `sysmon` · `windows-event-log` · `threat-detection` · `mitre-attack` · `soc` · `log-analysis` · `blue-team` · `filebeat` · `endpoint-security` · `log-monitoring` · `event-correlation` · `homelab` · `vmware` · `parrot-os`
