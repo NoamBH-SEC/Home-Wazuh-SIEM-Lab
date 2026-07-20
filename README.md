@@ -329,14 +329,14 @@ This project demonstrates experience with:
 Planned extensions include:
 
 1. Detect repeated Windows authentication failures.
-3. Detect suspicious PowerShell commands.
-4. Detect encoded PowerShell execution.
-5. Detect new local administrator accounts.
-7. Detect changes to sensitive Windows directories.
-10. Map detections to MITRE ATT&CK.
-11. Test Wazuh Active Response.
-12. Create custom Wazuh dashboard visualizations.
-14. Integrate TheHive, Shuffle, or MISP.
+2. Detect suspicious PowerShell commands.
+3. Detect encoded PowerShell execution.
+4. Detect new local administrator accounts.
+5. Detect changes to sensitive Windows directories.
+6. Map detections to MITRE ATT&CK.
+7. Test Wazuh Active Response.
+8. Create custom Wazuh dashboard visualizations.
+9. Integrate TheHive, Shuffle, or MISP.
 
 ---
 
