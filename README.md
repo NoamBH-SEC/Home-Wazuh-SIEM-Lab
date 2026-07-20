@@ -1,4 +1,4 @@
-Cybersecurity Portfolio
+
 Welcome to my cybersecurity portfolio. This repository documents hands-on security projects focused on security operations, endpoint monitoring, detection engineering, adversary emulation, incident response, and defensive automation.
 The goal of this portfolio is to demonstrate practical experience building security labs, generating telemetry, detecting suspicious activity, investigating alerts, and documenting repeatable defensive workflows.
 ---
