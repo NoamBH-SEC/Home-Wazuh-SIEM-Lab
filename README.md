@@ -308,7 +308,68 @@ The resulting Wazuh events demonstrated detection of:
 ![File Integrity Monitoring alert placeholder](screenshots/file-integrity-completed.png)
 
 
-## 11. Skills Demonstrated
+## 11. Parrot OS and Failed RDP Login Testing
+
+A Parrot OS virtual machine was added to the same VMware NAT network as the Ubuntu and Windows systems. It was used as the controlled testing machine for generating suspicious activity inside the lab.
+
+![Parrot OS desktop placeholder](screenshots/ParrotOS-desktop.png)
+
+
+Remote Desktop was enabled on the Windows 11 virtual machine so that authentication attempts could be generated from Parrot OS. The Windows VM IP address was confirmed with:
+
+```powershell
+ipconfig
+```
+
+FreeRDP was installed on Parrot OS, and controlled failed login attempts were generated against the Windows VM using a non-existent account named `fakeuser`:
+
+```bash
+xfreerdp3 /v:<windows-vm-ip> /u:fakeuser /p:'WrongPassword123!' /cert:ignore
+```
+
+Only a small number of attempts were made in the isolated lab to produce authentication-failure events without performing a real password attack.
+
+![Failed RDP login generation placeholder](screenshots/generating-failed-rdp-logins.png)
+
+
+The failed authentication events were then reviewed in Wazuh. The event details showed the attempted username, logon information, and source network address.
+
+![Failed login event placeholder](screenshots/failed-login-in-wazuh.png)
+
+
+The source IP recorded in the alert was also reviewed:
+
+![Attacker IP in alert placeholder](screenshots/ip-of-attacker-in-log.png)
+
+
+To validate the source, the Parrot OS IP address was checked with:
+
+```bash
+hostname -I
+```
+
+![Parrot OS IP confirmation placeholder](screenshots/parrotOS-ip-to-confirm-attacker.png)
+
+
+The IP address shown in the Wazuh event matched the Parrot OS address, confirming that the failed login attempts originated from the expected lab system.
+
+## 12. MITRE ATT&CK Mapping and Compliance Visibility
+
+Wazuh can associate alerts with MITRE ATT&CK techniques, which helps connect endpoint activity to recognizable adversary behaviors. This makes it easier to review detections in the context of attacker tactics and techniques rather than treating each alert as an isolated event.
+
+The dashboard also provides compliance-related views that help organize findings against security standards and control frameworks supported by the Wazuh ruleset, this is beneficial if you are a GRC or Compliance Analyst, allowing you to identify events associated with particular requirements, track control-related issues, and prepare evidence for compliance reviews.
+
+![MITRE ATT&CK and compliance placeholder](screenshots/Mitre-attack-mappings-and-compliance-modules.png)
+![compliance placeholder](screenshots/compliance-options-chart.png)
+
+These capabilities are useful for:
+
+- Understanding which attacker techniques are represented by an alert
+- Reviewing coverage across MITRE ATT&CK tactics
+- Grouping findings by compliance requirement
+- Supporting security assessments and reporting
+
+## 13. Skills Demonstrated
 
 This project demonstrates practical experience with:
 
@@ -328,16 +389,16 @@ This project demonstrates practical experience with:
 - Alert analysis
 - Troubleshooting
 
-## 12. Future Improvements
+## 14. Future Improvements
 
 Planned extensions include:
 
-1. Detect repeated Windows authentication failures
+1. Create a correlation rule for repeated RDP authentication failures
 2. Detect suspicious PowerShell commands
 3. Detect encoded PowerShell execution
 4. Detect newly created local administrator accounts
 5. Monitor changes to sensitive Windows directories
-6. Map custom detections to MITRE ATT&CK
+6. Expand custom MITRE ATT&CK mappings
 7. Test Wazuh Active Response
 8. Create custom Wazuh dashboard visualizations
 9. Integrate TheHive, Shuffle, or MISP
