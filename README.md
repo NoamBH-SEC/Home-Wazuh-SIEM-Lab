@@ -125,9 +125,8 @@ The installation was completed from the Ubuntu terminal.
 
 The Wazuh dashboard was accessed from the Windows host through a web browser.
 
-![Wazuh dashboard placeholder](screenshots/placeholder-wazuh-dashboard.png)
+![Wazuh dashboard placeholder](screenshots/wazuh-dashboard.png)
 
-*Replace `placeholder-wazuh-dashboard.png` with a screenshot of the Wazuh dashboard.*
 
 ## 4. Installing Windows 11
 
@@ -248,9 +247,8 @@ Restart-Service WazuhSvc
 
 The Threat Hunting dashboard was then used to confirm that Sysmon events were reaching Wazuh.
 
-![Sysmon events in Wazuh placeholder](screenshots/placeholder-wazuh-sysmon-events.png)
+![Sysmon events in Wazuh placeholder](screenshots/Wazuh-sysmon-logs.png)
 
-*Replace `placeholder-wazuh-sysmon-events.png` with a screenshot showing Sysmon events in Wazuh Threat Hunting.*
 
 ## 9. Configuring File Integrity Monitoring
 
