@@ -334,7 +334,7 @@ Only a small number of attempts were made in the isolated lab to produce authent
 
 The failed authentication events were then reviewed in Wazuh. The event details showed the attempted username, logon information, and source network address.
 
-![Failed login event placeholder](screenshots/failed-login-in-wazuh.png)
+![Failed login event placeholder](screenshots/failed-login-log-in-wazuh.png)
 
 
 The source IP recorded in the alert was also reviewed:
